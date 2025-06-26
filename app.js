@@ -1,6 +1,7 @@
 const express = require("express");
 let app = express();
 let userModel = require("./models/user");
+let postModel = require("./models/post");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 let jwt = require("jsonwebtoken");
@@ -16,10 +17,25 @@ app.get("/", (req, res) => {
 app.get("/login", (req, res) => {
   res.render("login");
 });
-app.get("/profile", isLoggedIn, (req, res) => {
-  console.log(req.user);
-  res.render("login");
+
+app.get("/profile", isLoggedIn, async (req, res) => {
+  let user = await userModel
+    .findOne({ email: req.user.email })
+    .populate("posts");
+  res.render("profile", { user });
 });
+
+app.post("/post", isLoggedIn, async (req, res) => {
+  let user = await userModel.findOne({ email: req.user.email });
+  let post = await postModel.create({
+    user: user._id,
+    content: req.body.content,
+  });
+  user.posts.push(post._id);
+  await user.save();
+  res.redirect("/profile");
+});
+
 app.get("/logout", (req, res) => {
   res.cookie("token", "");
   res.redirect("login");
@@ -43,6 +59,7 @@ app.post("/register", async (req, res) => {
     });
   });
 });
+
 app.post("/login", async (req, res) => {
   let { email, password } = req.body;
   let user = await userModel.findOne({ email });
@@ -51,7 +68,7 @@ app.post("/login", async (req, res) => {
     if (result) {
       let token = jwt.sign({ email: email, userId: user._id }, "shhhh");
       res.cookie("token", token);
-      res.send("LoggedIn");
+      res.redirect("profile");
     } else {
       return res.status(401).send("Invalid Credentials");
     }
@@ -59,7 +76,7 @@ app.post("/login", async (req, res) => {
 });
 
 function isLoggedIn(req, res, next) {
-  if (req.cookies.token == "") return res.send("You Must be LoggedIn");
+  if (req.cookies.token == "") return res.redirect("login");
   else {
     let data = jwt.verify(req.cookies.token, "shhhh");
     req.user = data;
