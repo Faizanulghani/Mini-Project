@@ -48,27 +48,28 @@
           <% user.posts.reverse().forEach(function(post){ %>
           <article class="p-4 rounded-xl bg-zinc-700 shadow">
             <header class="flex items-center justify-between mb-2">
-              <span class="font-medium text-indigo-300">@<%= user.username %></span>
+              <span class="font-medium text-indigo-300"
+                >@<%= user.username %></span
+              >
             </header>
 
             <!-- Post content -->
-            <p class="text-zinc-100 mb-4 whitespace-pre-line"><%= post.content %></p>
+            <p class="text-zinc-100 mb-4 whitespace-pre-line">
+              <%= post.content %>
+            </p>
             <!-- Actions -->
             <div class="flex gap-2">
-              <!-- Like -->
-              <form action="" method="POST">
-                <button
-                  type="submit"
-                  class="flex items-center gap-1 px-3 py-1 rounded-md text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 transition-colors duration-200"
-                >
-                  Like
-                  <span class="font-semibold">12</span>
-                </button>
-              </form>
+              <a
+                href="/like/<%= post._id  %>"
+                class="flex items-center gap-1 px-3 py-1 rounded-md text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 transition-colors duration-200"
+              >
+                <%= post.likes.indexOf(user._id) === -1 ? "Like" : "Unlike" %>
+                <span class="font-semibold"><%= post.likes.length %></span>
+              </a>
 
               <!-- Edit -->
               <a
-                href="#"
+                href="/edit/<%= post._id  %>"
                 class="px-3 py-1 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 transition-colors duration-200"
               >
                 Edit

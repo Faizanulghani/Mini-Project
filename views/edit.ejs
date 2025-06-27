@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Profile</title>
+  </head>
+
+  <body class="min-h-full bg-zinc-900 flex items-center justify-center px-4">
+    <div class="w-full max-w-md p-6 rounded-2xl bg-zinc-800 shadow-xl">
+      <h3 class="text-white mb-2">Edit Your Post</h3>
+      <form action="/update/<%= post.id %>" method="POST" class="space-y-4">
+        <textarea
+          name="content"
+          placeholder="What's on your mind?"
+          class="w-full h-32 resize-none rounded-lg bg-zinc-700 p-4 text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+<%= post.content %></textarea
+        >
+
+        <input
+          type="submit"
+          value="Edit Post"
+          class="w-full py-3 rounded-lg text-black bg-yellow-600 hover:bg-indigo-500 active:bg-indigo-700 transition-colors duration-200 cursor-pointer"
+        />
+      </form>
+    </div>
+  </body>
+</html>
