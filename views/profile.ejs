@@ -9,9 +9,17 @@
 
   <body class="min-h-full bg-zinc-900 flex items-center justify-center px-4">
     <div class="w-full max-w-md p-6 rounded-2xl bg-zinc-800 shadow-xl">
-      <!-- Header: greeting + Logout -->
       <div class="flex items-start justify-between mb-6">
         <div>
+          <div class="w-15 h-15 rounded-2xl overflow-hidden">
+            <a href="/pic">
+              <img
+                src="images/<%=user.profilePic %>"
+                alt=""
+                onerror="this.onerror=null;this.src='/images/default.jpg';"
+              />
+            </a>
+          </div>
           <p class="text-lg text-zinc-300">Hello</p>
           <h1 class="text-3xl font-bold text-white"><%= user.name %></h1>
         </div>
@@ -26,7 +34,6 @@
         </form>
       </div>
 
-      <!-- New-post form -->
       <form action="/post" method="POST" class="space-y-4">
         <textarea
           name="content"
